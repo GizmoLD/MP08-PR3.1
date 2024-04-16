@@ -3,12 +3,14 @@ package com.gizmo.drop;
 import java.util.Iterator;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -17,12 +19,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Drop extends ApplicationAdapter {
+public class Drop extends Game {
 	private Texture dropImage;
 	private Texture bucketImage;
 	private Sound dropSound;
 	private Music rainMusic;
-	private SpriteBatch batch;
+	public SpriteBatch batch;
+	public BitmapFont font;
 	private OrthographicCamera camera;
 	private Rectangle bucket;
 	private Array<Rectangle> raindrops;
@@ -56,6 +59,11 @@ public class Drop extends ApplicationAdapter {
 
 		// create the raindrops array and spawn the first raindrop
 		raindrops = new Array<Rectangle>();
+
+		batch = new SpriteBatch();
+		font = new BitmapFont(); // use libGDX's default Arial font
+		this.setScreen(new MainMenuScreen(this));
+
 		spawnRaindrop();
 	}
 
@@ -122,6 +130,7 @@ public class Drop extends ApplicationAdapter {
 				iter.remove();
 			}
 		}
+		super.render(); // important!
 	}
 
 	@Override
@@ -132,5 +141,7 @@ public class Drop extends ApplicationAdapter {
 		dropSound.dispose();
 		rainMusic.dispose();
 		batch.dispose();
+		batch.dispose();
+		font.dispose();
 	}
 }
